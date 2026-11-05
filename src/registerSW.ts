@@ -8,8 +8,11 @@ export function registerPWA() {
   }
 
   window.addEventListener('load', () => {
+    const baseUrl = import.meta.env.BASE_URL || './';
+    const swPath = `${baseUrl.replace(/\/$/, '')}/sw.js`;
+
     navigator.serviceWorker
-      .register('/sw.js', { scope: '/' })
+      .register(swPath)
       .then((registration) => {
         console.log('PWA ServiceWorker registered with scope:', registration.scope);
       })
