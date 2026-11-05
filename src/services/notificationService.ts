@@ -1,4 +1,5 @@
 import { NotificationSettings, WeatherPayload } from '../types/heat';
+import { safeStorage } from '../utils/storage';
 
 const NOTIFICATION_SETTINGS_KEY = 'heat_index_notif_settings_v1';
 const LAST_ALERT_TIMESTAMP_KEY = 'heat_index_last_alert_ts_v1';
@@ -12,7 +13,7 @@ export const DEFAULT_NOTIFICATION_SETTINGS: NotificationSettings = {
 
 export function getNotificationSettings(): NotificationSettings {
   try {
-    const raw = localStorage.getItem(NOTIFICATION_SETTINGS_KEY);
+    const raw = safeStorage.getItem(NOTIFICATION_SETTINGS_KEY);
     if (raw) {
       return { ...DEFAULT_NOTIFICATION_SETTINGS, ...JSON.parse(raw) };
     }
@@ -24,7 +25,7 @@ export function getNotificationSettings(): NotificationSettings {
 
 export function saveNotificationSettings(settings: NotificationSettings): void {
   try {
-    localStorage.setItem(NOTIFICATION_SETTINGS_KEY, JSON.stringify(settings));
+    safeStorage.setItem(NOTIFICATION_SETTINGS_KEY, JSON.stringify(settings));
   } catch (e) {
     console.warn('Failed to save notification settings:', e);
   }
@@ -66,15 +67,18 @@ export async function showPushAlert(title: string, options: NotificationOptions 
   };
 
   try {
-    if ('serviceWorker' in navigator) {
-      const reg = await navigator.serviceWorker.ready;
+    if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+      const reg = await Promise.race([
+        navigator.serviceWorker.ready,
+        new Promise<null>((resolve) => setTimeout(() => resolve(null), 500)),
+      ]);
       if (reg && 'showNotification' in reg) {
         await reg.showNotification(title, defaultOptions);
         return true;
       }
     }
   } catch (swErr) {
-    console.warn('Service worker notification failed, trying native window Notification:', swErr);
+    console.warn('Service worker notification skipped or failed, using native Notification:', swErr);
   }
 
   try {
@@ -96,7 +100,7 @@ export async function evaluateWeatherAlerts(payload: WeatherPayload): Promise<vo
   }
 
   // Prevent spamming alerts within a 2-hour window unless emergency
-  const lastAlert = Number(localStorage.getItem(LAST_ALERT_TIMESTAMP_KEY) || '0');
+  const lastAlert = Number(safeStorage.getItem(LAST_ALERT_TIMESTAMP_KEY) || '0');
   const now = Date.now();
   const twoHours = 2 * 60 * 60 * 1000;
 
@@ -121,7 +125,7 @@ export async function evaluateWeatherAlerts(payload: WeatherPayload): Promise<vo
   }
 
   if (alertTitle && (now - lastAlert > twoHours || currentHI >= 52)) {
-    localStorage.setItem(LAST_ALERT_TIMESTAMP_KEY, String(now));
+    safeStorage.setItem(LAST_ALERT_TIMESTAMP_KEY, String(now));
     await showPushAlert(alertTitle, {
       body: alertBody,
       data: { url: window.location.href },

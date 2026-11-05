@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { safeStorage } from '../utils/storage';
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -13,7 +14,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('heat_index_theme');
+    const saved = safeStorage.getItem('heat_index_theme');
     if (saved === 'light' || saved === 'dark' || saved === 'system') {
       return saved;
     }
@@ -51,7 +52,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
-    localStorage.setItem('heat_index_theme', newTheme);
+    safeStorage.setItem('heat_index_theme', newTheme);
   };
 
   const toggleTheme = () => {

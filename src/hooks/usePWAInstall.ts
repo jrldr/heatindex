@@ -12,10 +12,14 @@ export function usePWAInstall() {
 
   useEffect(() => {
     // Detect standalone mode (already installed)
-    const isStandalone =
-      window.matchMedia('(display-mode: standalone)').matches ||
-      (window.navigator as unknown as { standalone?: boolean }).standalone === true;
-    setIsInstalled(isStandalone);
+    try {
+      const isStandalone =
+        window.matchMedia('(display-mode: standalone)').matches ||
+        (window.navigator as unknown as { standalone?: boolean }).standalone === true;
+      setIsInstalled(isStandalone);
+    } catch {
+      setIsInstalled(false);
+    }
 
     // Detect iOS devices
     const userAgent = window.navigator.userAgent.toLowerCase();

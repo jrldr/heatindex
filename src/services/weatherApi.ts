@@ -11,6 +11,7 @@ import {
   getHealthAdvice,
   getWeatherDescription,
 } from '../utils/heatIndex';
+import { safeStorage } from '../utils/storage';
 
 export const DEFAULT_CAVITE_LOCATION: LocationData = {
   id: 'cavite-default',
@@ -180,11 +181,11 @@ export async function reverseGeocodeGPS(lat: number, lon: number): Promise<Locat
 }
 
 /**
- * Gets cached weather payload from localStorage if available.
+ * Gets cached weather payload from localStorage/safeStorage if available.
  */
 export function getCachedWeatherPayload(): WeatherPayload | null {
   try {
-    const raw = localStorage.getItem(CACHE_KEY);
+    const raw = safeStorage.getItem(CACHE_KEY);
     if (!raw) return null;
     const parsed: WeatherPayload = JSON.parse(raw);
     parsed.isCached = true;
@@ -196,22 +197,22 @@ export function getCachedWeatherPayload(): WeatherPayload | null {
 }
 
 /**
- * Saves last loaded location to localStorage.
+ * Saves last loaded location to safeStorage.
  */
 export function saveLastLocation(loc: LocationData): void {
   try {
-    localStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(loc));
+    safeStorage.setItem(LAST_LOCATION_KEY, JSON.stringify(loc));
   } catch (err) {
     console.warn('Failed to save last location:', err);
   }
 }
 
 /**
- * Gets the last saved location from localStorage, or defaults to Cavite.
+ * Gets the last saved location from safeStorage, or defaults to Cavite.
  */
 export function getLastLocation(): LocationData {
   try {
-    const raw = localStorage.getItem(LAST_LOCATION_KEY);
+    const raw = safeStorage.getItem(LAST_LOCATION_KEY);
     if (raw) {
       return JSON.parse(raw);
     }
@@ -328,10 +329,10 @@ export async function fetchLiveWeatherData(
 
     // Cache locally for offline access
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(payload));
+      safeStorage.setItem(CACHE_KEY, JSON.stringify(payload));
       saveLastLocation(location);
     } catch (err) {
-      console.warn('Failed to cache weather data in localStorage:', err);
+      console.warn('Failed to cache weather data:', err);
     }
 
     return payload;
