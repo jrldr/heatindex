@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#1e1b4b" />
+    </linearGradient>
+    <linearGradient id="flameGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#ea580c" />
+      <stop offset="50%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#facc15" />
+    </linearGradient>
+    <linearGradient id="mercuryGrad" x1="0%" y1="100%" x2="0%" y2="0%">
+      <stop offset="0%" stop-color="#dc2626" />
+      <stop offset="60%" stop-color="#f97316" />
+      <stop offset="100%" stop-color="#facc15" />
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="16" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="512" height="512" rx="112" fill="url(#bgGrad)" />
+
+  <!-- Heat Aura / Sun Rays -->
+  <circle cx="256" cy="256" r="160" fill="none" stroke="#f97316" stroke-width="4" stroke-opacity="0.25" stroke-dasharray="12 16" />
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#facc15" stroke-width="2" stroke-opacity="0.15" stroke-dasharray="8 20" />
+
+  <!-- Thermometer Stem Outline -->
+  <rect x="232" y="100" width="48" height="230" rx="24" fill="#1e293b" stroke="#475569" stroke-width="8" />
+
+  <!-- Thermometer Bulb Outline -->
+  <circle cx="256" cy="350" r="64" fill="#1e293b" stroke="#475569" stroke-width="8" />
+
+  <!-- Mercury Inner Liquid -->
+  <rect x="242" y="160" width="28" height="170" rx="14" fill="url(#mercuryGrad)" />
+  <circle cx="256" cy="350" r="48" fill="url(#mercuryGrad)" filter="url(#glow)" />
+
+  <!-- Reflection Highlight -->
+  <path d="M246 170 Q246 320 246 330" stroke="#ffffff" stroke-width="4" stroke-linecap="round" stroke-opacity="0.6" />
+  <circle cx="244" cy="340" r="12" fill="#ffffff" fill-opacity="0.4" />
+
+  <!-- Degree Tick Marks -->
+  <line x1="290" y1="140" x2="310" y2="140" stroke="#94a3b8" stroke-width="5" stroke-linecap="round" />
+  <line x1="290" y1="180" x2="322" y2="180" stroke="#f97316" stroke-width="6" stroke-linecap="round" />
+  <line x1="290" y1="220" x2="310" y2="220" stroke="#94a3b8" stroke-width="5" stroke-linecap="round" />
+  <line x1="290" y1="260" x2="326" y2="260" stroke="#dc2626" stroke-width="6" stroke-linecap="round" />
+
+  <!-- Sun Heat Accent at Top Right -->
+  <g transform="translate(350, 90)">
+    <circle cx="24" cy="24" r="22" fill="#f59e0b" filter="url(#glow)" />
+    <path d="M24 0 L24 -8 M24 48 L24 56 M0 24 L-8 24 M48 24 L56 24 M7 7 L1 1 M41 41 L47 47 M7 41 L1 47 M41 7 L47 1" stroke="#fbbf24" stroke-width="4" stroke-linecap="round" />
+  </g>
+</svg>
