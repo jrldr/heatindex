@@ -142,19 +142,19 @@ export const LocationSearchModal: React.FC<LocationSearchModalProps> = ({
 
         {/* Search input */}
         <div className="relative my-2">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-400" />
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-neutral-500 dark:text-neutral-400" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Type city, municipality, province..."
             autoFocus
-            className="w-full rounded-xl border border-neutral-300 bg-neutral-50 pl-10 pr-10 py-2.5 text-sm text-neutral-900 placeholder-neutral-400 focus:border-orange-500 focus:bg-white focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:focus:border-orange-500"
+            className="w-full rounded-xl border border-neutral-300 bg-neutral-100 pl-10 pr-10 py-3 text-sm text-neutral-950 font-medium placeholder:text-neutral-500 focus:border-orange-500 focus:bg-white focus:text-neutral-950 focus:outline-hidden dark:border-neutral-700 dark:bg-neutral-800 dark:text-white dark:placeholder:text-neutral-400 dark:focus:bg-neutral-800 dark:focus:text-white dark:focus:border-orange-500 transition-colors shadow-2xs"
           />
           {query && (
             <button
               onClick={() => setQuery('')}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-neutral-400 hover:text-neutral-700 dark:hover:text-neutral-200"
             >
               <X className="h-4 w-4" />
             </button>

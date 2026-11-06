@@ -30,12 +30,28 @@ export interface HealthAdvice {
   };
   summary: string;
   pagasaLevel: string;
+  physiologicalEffect: string;
+  workRestCycle: string;
+  dohBulletin: string;
   symptoms: string[];
-  hydration: string;
+  hydration: {
+    targetLiters: string;
+    rate: string;
+    recommendedDrinks: string[];
+    drinksToAvoid: string[];
+  };
   outdoorActivity: string;
   clothing: string;
-  vulnerableGroups: string;
-  firstAid: string;
+  vulnerableGroups: {
+    seniors: string;
+    infants: string;
+    outdoorWorkers: string;
+    pets: string;
+  };
+  firstAid: {
+    exhaustionSteps: string[];
+    strokeEmergency: string[];
+  };
 }
 
 export interface CurrentWeatherData {

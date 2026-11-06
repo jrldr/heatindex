@@ -33,9 +33,11 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
       if (effectiveDark) {
         document.documentElement.classList.add('dark');
+        document.documentElement.style.colorScheme = 'dark';
         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#0f172a');
       } else {
         document.documentElement.classList.remove('dark');
+        document.documentElement.style.colorScheme = 'light';
         document.querySelector('meta[name="theme-color"]')?.setAttribute('content', '#f8fafc');
       }
     };

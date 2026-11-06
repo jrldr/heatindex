@@ -1,18 +1,29 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    color-scheme: light dark;
-  }
+@custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
   html {
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
+  html.dark {
+    color-scheme: dark;
+  }
+
+  html:not(.dark) {
+    color-scheme: light;
+  }
+
   body {
     min-height: 100dvh;
     overflow-x: hidden;
+  }
+
+  /* Explicit input text contrast to avoid browser auto-dark white-on-white collisions */
+  input, textarea, select {
+    color: inherit;
   }
 }
 
